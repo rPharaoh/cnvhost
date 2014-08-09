@@ -5,7 +5,7 @@
 
 ## Web Site Dirs and Logs
 
-## user need to edit this section if it need:
+## user can edit this section if it need:
 webDir="/var/www/htdocs/"
 logDir="/var/www/log/"
 vhostsDir="/etc/apache2/vhosts/"
