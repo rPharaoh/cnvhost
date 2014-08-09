@@ -22,6 +22,9 @@ webDir="/var/www/htdocs/"
 logDir="/var/www/log/"
 vhostsDir="/etc/apache2/vhosts/"
 
+## port for the vhost configration file 80 the stander
+port="80"
+
 configFilePath="/etc/apache2/"
 configFileName="apache2.conf"
 backupConfigFile="apache2.conf.bak"
@@ -205,7 +208,7 @@ function vhostFileSchame {
 
 echo "[+] writeing vhost config file schame!"
 
-echo "<VirtualHost *:80>" >> ${nSiteVHostConfigFile}
+echo "<VirtualHost *:${port}>" >> ${nSiteVHostConfigFile}
 
 printf "\t # this 1\n" >> ${nSiteVHostConfigFile}
 printf "\t ServerName www.%s \n" "${siteName}" >> ${nSiteVHostConfigFile}
