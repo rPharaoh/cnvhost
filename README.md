@@ -3,6 +3,8 @@ cnvhost
 
 Bash script for creating Apache Virtual Host on linux systems ( tested on Ubuntu server )
 
+this script for making virtual hosts easy for fast web application testing, development
+
 creating new virtual host
 
 usage: sudo ./cnvhost.sh -c example.com
