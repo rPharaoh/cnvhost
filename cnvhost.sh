@@ -6,13 +6,18 @@
 ## Web Site Dirs and Logs
 
 ## user can edit this section if it need:
+## this configration for ubuntu servers 
 webDir="/var/www/htdocs/"
 logDir="/var/www/log/"
-vhostsDir="/etc/apache2/vhosts/"
+vhostsDir="vhosts/"
 
 ## port for the vhost configration file 80 the stander
 port="80"
 
+## for CentOS can use configration like
+## "httpd.conf"
+## "/etc/httpd/"
+## "httpd.conf.bak"
 configFilePath="/etc/apache2/"
 configFileName="apache2.conf"
 backupConfigFile="apache2.conf.bak"
@@ -37,13 +42,14 @@ delOpt=$3
 ## full configration path 
 mainConfigFile=$configFilePath$configFileName
 mainConfigBackupFile=$configFilePath$backupConfigFile
+mainvHostDir=$configFilePath$vhostsDir
 
 ## vhost paths
 ## all site will be vhosts/sitename.conf
 ## later we can make it: vhosts/sitenameFolder/sitename.conf
 ## for avoiding nasted files and subdomains configrations files
 
-nSiteVHostConfigFile=$vhostsDir$siteName$configFile
+nSiteVHostConfigFile=$mainvHostDir$siteName$configFile
 
 ## web site paths 
 nSiteDIR=$webDir$siteName"/"
@@ -116,11 +122,11 @@ function createAllFolders {
 ## =================================
 ## Main vhosts Dir
 
-if [ ! -d $vhostsDir ]; then
-        mkdir -p $vhostsDir;
+if [ ! -d $mainvHostDir ]; then
+        mkdir -p $mainvHostDir;
         echo "[+] Creating Virtual Host Folder."
 else 
-        echo "[-] '$vhostsDir' Folder already exist!"
+        echo "[-] '$mainvHostDir' Folder already exist!"
 fi;
 
 ## =================================
@@ -354,16 +360,16 @@ fi;
 ## here the delete for the hole vhost folder and files P.S do not implement it ## if you make sure its have a spreated command like -da --deleteAll
 ## this dingers do not use it at all
 
-if [ -d ${vhostsDir} ]; then
+if [ -d ${mainvHostDir} ]; then
 
         ## back it up first
 
-        rm -f -r ${vhostsDir};
+        rm -f -r ${mainvHostDir};
         
-        echo "[+] deleting web site folder: ", ${vhostsDir};
+        echo "[+] deleting web site folder: ", ${mainvHostDir};
 
 else
-        echo "[-] '${vhostsDir}' Folder dos not exist!"
+        echo "[-] '${mainvHostDir}' Folder dos not exist!"
         
 fi;
 
