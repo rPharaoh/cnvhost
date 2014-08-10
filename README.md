@@ -1,7 +1,7 @@
 cnvhost
 =======
 
-Bash script for creating Apache Virtual Host on linux systems ( tested on Ubuntu server )
+Bash script for creating Apache Virtual Host on linux systems ( tested on Ubuntu Server, CentOS )
 
 this script for making virtual hosts easy for fast web application testing, development
 
