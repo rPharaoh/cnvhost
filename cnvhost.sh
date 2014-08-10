@@ -89,20 +89,20 @@ if [ ! -e ${mainConfigBackupFile} ]; then
 
         if [ -e ${mainConfigBackupFile} ]; then 
                 
-                echo -e "${LGREEN}[+] \e[0m Configration file is Backed up."
+                echo -e "${LGREEN}[+]\e[0m Configration file is Backed up."
         else
-                echo -e "${LRED}[-] \e[0m Error!, Configration file Backup error!"
+                echo -e "${LRED}[-]\e[0m Error!, Configration file Backup error!"
         fi;
 else 
-        echo -e "${LRED}[-] \e[0m Configration file is already exist!"
+        echo -e "${LRED}[-]\e[0m Configration file is already exist!"
 fi;
 
 check=$(cat ${mainConfigFile} | grep -n "${injectedComment}" | head -1 | cut -d: -f2)
 
 if [ "$injectedComment" = "$check" ]; then
-        echo -e "${LRED}[-] \e[0m comment already exist!"
+        echo -e "${LRED}[-]\e[0m comment already exist!"
 else
-        echo -e "${LGREEN}[+] \e[0m adding script comment!"
+        echo -e "${LGREEN}[+]\e[0m adding script comment!"
         echo ${injectedComment} >> ${mainConfigFile}
 fi;
 
@@ -112,9 +112,9 @@ fi;
 check2=$(cat ${mainConfigFile} | grep -n "${checkInjectedCommand}" | head -1 | cut -d: -f2)
 
 if [ "$injectedCommand" = "$check2" ]; then
-        echo -e "${LRED}[-] \e[0m command already exist!"
+        echo -e "${LRED}[-]\e[0m command already exist!"
 else
-        echo -e "${LGREEN}[+] \e[0m adding script command!"
+        echo -e "${LGREEN}[+]\e[0m adding script command!"
         echo ${injectedCommand} >> ${mainConfigFile}
 fi;
 
@@ -128,9 +128,9 @@ function createAllFolders {
 
 if [ ! -d $mainvHostDir ]; then
         mkdir -p $mainvHostDir;
-        echo -e "${LGREEN}[+] \e[0m Creating Virtual Host Folder."
+        echo -e "${LGREEN}[+]\e[0m Creating Virtual Host Folder."
 else 
-        echo -e "${LRED}[-] \e[0m '$mainvHostDir' Folder already exist!"
+        echo -e "${LRED}[-]\e[0m '$mainvHostDir' Folder already exist!"
 fi;
 
 ## =================================
@@ -139,9 +139,9 @@ fi;
 
 if [ ! -d ${nSiteLogsDIR} ]; then
         mkdir -p ${nSiteLogsDIR};
-        echo -e "${LGREEN}[+] \e[0m Creating Log Folder.";
+        echo -e "${LGREEN}[+]\e[0m Creating Log Folder.";
 else 
-        echo -e "${LRED}[-] \e[0m '${nSiteLogsDIR}' Folder already exist!"
+        echo -e "${LRED}[-]\e[0m '${nSiteLogsDIR}' Folder already exist!"
 fi;
 
 ## =================================
@@ -150,12 +150,12 @@ fi;
 if [ ! -d ${nSiteDIR} ]; then
         mkdir -p ${nSiteDIR};
         mkdir -p ${nSitePubHTM};
-        echo -e "${LGREEN}[+] \e[0m Creating web site folder: " ${nSiteDIR};
-        echo -e "${LGREEN}[+] \e[0m Creating web site public_html folder: " ${nSitePubHTM};
+        echo -e "${LGREEN}[+]\e[0m Creating web site folder: " ${nSiteDIR};
+        echo -e "${LGREEN}[+]\e[0m Creating web site public_html folder: " ${nSitePubHTM};
 
 else
-        echo -e "${LRED}[-] \e[0m '${nSiteDIR}' Folder already exist!"
-        echo -e "${LRED}[-] \e[0m '${nSitePubHTM}' Folder already exist!"
+        echo -e "${LRED}[-]\e[0m '${nSiteDIR}' Folder already exist!"
+        echo -e "${LRED}[-]\e[0m '${nSitePubHTM}' Folder already exist!"
 fi;
 
 
@@ -168,16 +168,16 @@ function createLogsFiles {
 
 if [ ! -e ${nSiteLogErrorFile} ]; then
         echo '' > ${nSiteLogErrorFile};
-        echo -e "${LGREEN}[+] \e[0m creating file: " ${nSiteLogErrorFile};
+        echo -e "${LGREEN}[+]\e[0m creating file: " ${nSiteLogErrorFile};
 else
-        echo -e "${LRED}[-] \e[0m '${nSiteLogErrorFile}' File dos not exist!"
+        echo -e "${LRED}[-]\e[0m '${nSiteLogErrorFile}' File dos not exist!"
 fi;
 
 if [ ! -e ${nSiteLogAccessFile} ]; then
         echo '' > ${nSiteLogAccessFile};
-        echo -e "${LGREEN}[+] \e[0m creating file: " ${nSiteLogAccessFile};
+        echo -e "${LGREEN}[+]\e[0m creating file: " ${nSiteLogAccessFile};
 else
-        echo -e "${LRED}[-] \e[0m '${nSiteLogAccessFile}' File already exist!"
+        echo -e "${LRED}[-]\e[0m '${nSiteLogAccessFile}' File already exist!"
 fi;
 
 }
@@ -189,11 +189,11 @@ function createVHostFiles {
 
 if [ ! -e ${nSiteVHostConfigFile} ]; then
         echo '' > ${nSiteVHostConfigFile};
-        echo -e "${LGREEN}[+] \e[0m Creating file: " ${nSiteVHostConfigFile};
+        echo -e "${LGREEN}[+]\e[0m Creating file: " ${nSiteVHostConfigFile};
         ## write the configration 
         vhostFileSchame
 else
-        echo -e "${LRED}[-] \e[0m '${nSiteVHostConfigFile}' File already exist!"
+        echo -e "${LRED}[-]\e[0m '${nSiteVHostConfigFile}' File already exist!"
 fi;
 
 }
@@ -204,7 +204,7 @@ function vhostFileSchame {
 ## creating vhost config file for the web site
 ## =================================
 
-echo -e "${LGREEN}[+] \e[0m writeing vhost config file schame!"
+echo -e "${LGREEN}[+]\e[0m writeing vhost config file schame!"
 
 echo "<VirtualHost *:${port}>" >> ${nSiteVHostConfigFile}
 
@@ -222,7 +222,7 @@ printf "\t CustomLog %s combined\n" "${nSiteLogAccessFile}" >> ${nSiteVHostConfi
 
 echo "</VirtualHost>" >> ${nSiteVHostConfigFile}
 
-echo -e "${LGREEN}[+] \e[0m writeing vhost config file, done!"
+echo -e "${LGREEN}[+]\e[0m writeing vhost config file, done!"
 }
 
 function indexPageSchame {
@@ -231,7 +231,7 @@ function indexPageSchame {
 ## =================================
 
 if [ ! -e ${nSiteIndex} ]; then 
-        echo -e "${LGREEN}[+] \e[0m creating the index page..."
+        echo -e "${LGREEN}[+]\e[0m creating the index page..."
 
         echo "<!DOCTYPE html>" > ${nSiteIndex};
         echo "<html>" >> ${nSiteIndex};
@@ -243,10 +243,10 @@ if [ ! -e ${nSiteIndex} ]; then
         echo "</body>" >> ${nSiteIndex};
         echo "</html>" >> ${nSiteIndex};
         
-        echo -e "${LGREEN}[+] \e[0m changing index permissions "
+        echo -e "${LGREEN}[+]\e[0m changing index permissions "
         sudo chown -R $USER:$USER ${nSiteIndex}
 else 
-        echo -e "${LRED}[-] \e[0m '${nSiteIndex}' File already exist!"
+        echo -e "${LRED}[-]\e[0m '${nSiteIndex}' File already exist!"
 fi;
 
 }
@@ -265,12 +265,12 @@ if [ -d ${nSiteDIR} ]; then
         rm -f -r ${nSitePubHTM}
         rm -f -r ${nSiteDIR}
         
-        echo -e "${LGREEN}[+] \e[0m deleting web site folder: " ${nSiteDIR};
-        echo -e "${LGREEN}[+] \e[0m deleting web site public_html folder: " ${nSitePubHTM};
+        echo -e "${LGREEN}[+]\e[0m deleting web site folder: " ${nSiteDIR};
+        echo -e "${LGREEN}[+]\e[0m deleting web site public_html folder: " ${nSitePubHTM};
 
 else
-        echo -e "${LRED}[-] \e[0m '${nSiteDIR}' Folder dos not exist!"
-        echo -e "${LRED}[-] \e[0m '${nSitePubHTM}' Folder dos not exist!"
+        echo -e "${LRED}[-]\e[0m '${nSiteDIR}' Folder dos not exist!"
+        echo -e "${LRED}[-]\e[0m '${nSitePubHTM}' Folder dos not exist!"
 fi;
 
 ## delete website logs folder
@@ -278,9 +278,9 @@ fi;
 if [ -d ${nSiteLogsDIR} ]; then
         rm -r -f ${nSiteLogsDIR}
 
-        echo -e "${LGREEN}[+] \e[0m deleting Log Folder" ${nSiteLogsDIR}; 
+        echo -e "${LGREEN}[+]\e[0m deleting Log Folder" ${nSiteLogsDIR}; 
 else
-        echo -e "${LRED}[-] \e[0m '${nSiteLogsDIR}' Folder not exist!"
+        echo -e "${LRED}[-]\e[0m '${nSiteLogsDIR}' Folder not exist!"
 fi;
 
 }
@@ -293,10 +293,10 @@ if [ -e ${nSiteVHostConfigFile} ]; then
         ## back it up first
         rm -f ${nSiteVHostConfigFile}
 
-        echo -e "${LGREEN}[+] \e[0m deleting web site config file: " ${nSiteVHostConfigFile}
+        echo -e "${LGREEN}[+]\e[0m deleting web site config file: " ${nSiteVHostConfigFile}
 
 else
-        echo -e "${LRED}[-] \e[0m '${nSiteVHostConfigFile}' File dos not exist!"
+        echo -e "${LRED}[-]\e[0m '${nSiteVHostConfigFile}' File dos not exist!"
 fi;
 
 }
@@ -309,16 +309,16 @@ function deleteLogFiles {
 
 if [ -e ${nSiteLogErrorFile} ]; then
         rm -f ${nSiteLogErrorFile};
-        echo -e "${LGREEN}[+] \e[0m deleting file: ", ${nSiteLogErrorFile};
+        echo -e "${LGREEN}[+]\e[0m deleting file: ", ${nSiteLogErrorFile};
 else 
-        echo -e "${LRED}[-] \e[0m '${nSiteLogErrorFile}' File dos not exist!"
+        echo -e "${LRED}[-]\e[0m '${nSiteLogErrorFile}' File dos not exist!"
 fi;
 
 if [ -e ${nSiteLogAccessFile} ]; then
         rm -f ${nSiteLogAccessFile};
-        echo -e "${LGREEN}[+] \e[0m deleting file: ", ${nSiteLogAccessFile};
+        echo -e "${LGREEN}[+]\e[0m deleting file: ", ${nSiteLogAccessFile};
 else
-        echo -e "${LRED}[-] \e[0m '${nSiteLogAccessFile}' File not exist!"
+        echo -e "${LRED}[-]\e[0m '${nSiteLogAccessFile}' File not exist!"
 fi;
 
 }
@@ -342,20 +342,20 @@ if [ -e ${mainConfigBackupFile} ]; then
 
         if [ ! -e ${mainConfigBackupFile} ]; then
 
-                echo -e "${LGREEN}[+] \e[0m file removed successfuly."
+                echo -e "${LGREEN}[+]\e[0m file removed successfuly."
         else
-                echo -e "${LRED}[-] \e[0m Error!, configration file not removed!"
+                echo -e "${LRED}[-]\e[0m Error!, configration file not removed!"
         fi;
 else
-        echo -e "${LRED}[-] \e[0m Configration file not exist!"
+        echo -e "${LRED}[-]\e[0m Configration file not exist!"
 
 fi;
 
 if [ ! -d ${nSiteLogsDIR} ]; then
         rm -f -r ${nSiteLogsDIR};
-        echo -e "${LGREEN}[+] \e[0m deleting file: ", ${nSiteLogsDIR};
+        echo -e "${LGREEN}[+]\e[0m deleting file: ", ${nSiteLogsDIR};
 else
-        echo -e "${LRED}[-] \e[0m '${nSiteLogsDIR}' File dos not exist!"
+        echo -e "${LRED}[-]\e[0m '${nSiteLogsDIR}' File dos not exist!"
 fi;
 
 ## =================================
@@ -370,10 +370,10 @@ if [ -d ${mainvHostDir} ]; then
 
         rm -f -r ${mainvHostDir};
         
-        echo -e "${LGREEN}[+] \e[0m deleting web site folder: ", ${mainvHostDir};
+        echo -e "${LGREEN}[+]\e[0m deleting web site folder: ", ${mainvHostDir};
 
 else
-        echo -e "${LRED}[-] \e[0m '${mainvHostDir}' Folder dos not exist!"
+        echo -e "${LRED}[-]\e[0m '${mainvHostDir}' Folder dos not exist!"
         
 fi;
 
