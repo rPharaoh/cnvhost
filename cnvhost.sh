@@ -3,6 +3,8 @@
 #   Created: Sun August 03 21:04:12 2014 by Nader Nabil @Nader_N2012
 #
 
+## sudo get the permissions first 
+
 LRED="\033[01;31m"
 LGREEN="\033[01;32m"
 
@@ -10,31 +12,60 @@ LGREEN="\033[01;32m"
 ## user can edit this section if it need:
 ## this configration for ubuntu servers 
 webDir="/var/www/htdocs/"
-logDir="/var/www/log/"
 vhostsDir="vhosts/"
 
 ## port for the vhost configration file 80 the stander
 port="80"
 
-## for CentOS can use configration like
-## "httpd.conf"
-## "/etc/httpd/"
-## "httpd.conf.bak"
-configFilePath="/etc/apache2/"
-configFileName="apache2.conf"
-backupConfigFile="apache2.conf.bak"
-
-## Logs Files Access Log And Error Log
-
-errorLog="_error.log"
-accessLog="_access.log"
-
 ## vhost file for site
-
 configFile=".conf"
 injectedComment="# Include vhosts"
 injectedCommand="Include vhosts/*.conf"
 checkInjectedCommand="Include vhosts/\*.conf"
+
+## for CentOS can use configration like
+## find system type
+## CentOS or Ubuntu
+
+ubuntu=$(cat /proc/version | grep -o ubuntu)
+centOS=$(cat /proc/version | grep -o centos)
+
+if [[ -n $ubuntu && "$ubuntu" == "ubuntu" ]]; then
+        echo -e "${LGREEN}[+]\e[0m System detacted: " $ubuntu
+
+        configFilePath="/etc/apache2/"
+        configFileName="apache2.conf"
+        backupConfigFile="apache2.conf.bak" 
+        logDir="/var/www/log/" 
+
+elif [[ -n $centOS && "$centOS" == "centos" ]]; then
+        echo -e "${LGREEN}[+]\e[0m System detacted: " $centOS
+
+        ## for CentOS can use configration like
+        configFilePath="/etc/httpd/conf/"
+        configFileName="httpd.conf"
+        backupConfigFile="httpd.conf.bak"
+        logDir="/etc/httpd/logs/"
+
+        injectedCommand="Include conf/vhosts/*.conf"
+        checkInjectedCommand="Include conf/vhosts/\*.conf"
+
+
+
+else
+        echo -e "${LRED}[-]\e[0m error!, can't detact system"
+        echo -e "${LGREEN}[+]\e[0m using defualt setting"
+        ## this the defualt configration for the script
+        configFilePath="/etc/apache2/conf"
+        configFileName="apache2.conf"
+        backupConfigFile="apache2.conf.bak" 
+        logDir="/var/www/log/" 
+
+fi;
+
+## Logs Files Access Log And Error Log
+errorLog="_error.log"
+accessLog="_access.log"
 
 ## user argement and options
 opt=$1
@@ -135,8 +166,8 @@ fi;
 ## main Logs Dir
 
 if [ ! -d ${nSiteLogsDIR} ]; then
-        mkdir -p ${nSiteLogsDIR};
-        echo -e "${LGREEN}[+]\e[0m Creating Log Folder.";
+        mkdir -p ${nSiteLogsDIR}
+        echo -e "${LGREEN}[+]\e[0m Creating Log Folder."
 else 
         echo -e "${LRED}[-]\e[0m '${nSiteLogsDIR}' Folder already exist!"
 fi;
@@ -145,8 +176,8 @@ fi;
 ## make the web site folders
 
 if [ ! -d ${nSiteDIR} ]; then
-        mkdir -p ${nSiteDIR};
-        mkdir -p ${nSitePubHTM};
+        mkdir -p ${nSiteDIR}
+        mkdir -p ${nSitePubHTM}
         echo -e "${LGREEN}[+]\e[0m Creating web site folder: " ${nSiteDIR};
         echo -e "${LGREEN}[+]\e[0m Creating web site public_html folder: " ${nSitePubHTM};
 
@@ -164,15 +195,15 @@ function createLogsFiles {
 ## this created with -c option
 
 if [ ! -e ${nSiteLogErrorFile} ]; then
-        echo '' > ${nSiteLogErrorFile};
-        echo -e "${LGREEN}[+]\e[0m creating file: " ${nSiteLogErrorFile};
+        echo '' > ${nSiteLogErrorFile}
+        echo -e "${LGREEN}[+]\e[0m creating file: " ${nSiteLogErrorFile}
 else
         echo -e "${LRED}[-]\e[0m '${nSiteLogErrorFile}' File dos not exist!"
 fi;
 
 if [ ! -e ${nSiteLogAccessFile} ]; then
-        echo '' > ${nSiteLogAccessFile};
-        echo -e "${LGREEN}[+]\e[0m creating file: " ${nSiteLogAccessFile};
+        echo '' > ${nSiteLogAccessFile}
+        echo -e "${LGREEN}[+]\e[0m creating file: " ${nSiteLogAccessFile}
 else
         echo -e "${LRED}[-]\e[0m '${nSiteLogAccessFile}' File already exist!"
 fi;
@@ -185,8 +216,8 @@ function createVHostFiles {
 ## =================================
 
 if [ ! -e ${nSiteVHostConfigFile} ]; then
-        echo '' > ${nSiteVHostConfigFile};
-        echo -e "${LGREEN}[+]\e[0m Creating file: " ${nSiteVHostConfigFile};
+        echo '' > ${nSiteVHostConfigFile}
+        echo -e "${LGREEN}[+]\e[0m Creating file: " ${nSiteVHostConfigFile}
         ## write the configration 
         vhostFileSchame
 else
@@ -230,15 +261,15 @@ function indexPageSchame {
 if [ ! -e ${nSiteIndex} ]; then 
         echo -e "${LGREEN}[+]\e[0m creating the index page..."
 
-        echo "<!DOCTYPE html>" > ${nSiteIndex};
-        echo "<html>" >> ${nSiteIndex};
-        echo "<head>" >> ${nSiteIndex};
-        echo "<title> ${siteName} </title> " >> ${nSiteIndex};
-        echo "</head>" >> ${nSiteIndex};
+        echo "<!DOCTYPE html>" > ${nSiteIndex}
+        echo "<html>" >> ${nSiteIndex}
+        echo "<head>" >> ${nSiteIndex}
+        echo "<title> ${siteName} </title> " >> ${nSiteIndex}
+        echo "</head>" >> ${nSiteIndex}
         echo "<body>" >> ${nSiteIndex};
-        echo "<h1>This is index page for ${siteName} virtual host</h1>" >> ${nSiteIndex};
-        echo "</body>" >> ${nSiteIndex};
-        echo "</html>" >> ${nSiteIndex};
+        echo "<h1>This is index page for $siteName virtual host</h1>" >> ${nSiteIndex}
+        echo "</body>" >> ${nSiteIndex}
+        echo "</html>" >> ${nSiteIndex}
         
         echo -e "${LGREEN}[+]\e[0m changing index permissions "
         sudo chown -R $USER:$USER ${nSiteIndex}
@@ -262,8 +293,8 @@ if [ -d ${nSiteDIR} ]; then
         rm -f -r ${nSitePubHTM}
         rm -f -r ${nSiteDIR}
         
-        echo -e "${LGREEN}[+]\e[0m deleting web site folder: " ${nSiteDIR};
-        echo -e "${LGREEN}[+]\e[0m deleting web site public_html folder: " ${nSitePubHTM};
+        echo -e "${LGREEN}[+]\e[0m deleting web site folder: " ${nSiteDIR}
+        echo -e "${LGREEN}[+]\e[0m deleting web site public_html folder: " ${nSitePubHTM}
 
 else
         echo -e "${LRED}[-]\e[0m '${nSiteDIR}' Folder dos not exist!"
@@ -275,7 +306,7 @@ fi;
 if [ -d ${nSiteLogsDIR} ]; then
         rm -r -f ${nSiteLogsDIR}
 
-        echo -e "${LGREEN}[+]\e[0m deleting Log Folder" ${nSiteLogsDIR}; 
+        echo -e "${LGREEN}[+]\e[0m deleting Log Folder" ${nSiteLogsDIR}
 else
         echo -e "${LRED}[-]\e[0m '${nSiteLogsDIR}' Folder not exist!"
 fi;
@@ -306,14 +337,14 @@ function deleteLogFiles {
 
 if [ -e ${nSiteLogErrorFile} ]; then
         rm -f ${nSiteLogErrorFile};
-        echo -e "${LGREEN}[+]\e[0m deleting file: ", ${nSiteLogErrorFile};
+        echo -e "${LGREEN}[+]\e[0m deleting file: ", ${nSiteLogErrorFile}
 else 
         echo -e "${LRED}[-]\e[0m '${nSiteLogErrorFile}' File dos not exist!"
 fi;
 
 if [ -e ${nSiteLogAccessFile} ]; then
         rm -f ${nSiteLogAccessFile};
-        echo -e "${LGREEN}[+]\e[0m deleting file: ", ${nSiteLogAccessFile};
+        echo -e "${LGREEN}[+]\e[0m deleting file: ", ${nSiteLogAccessFile}
 else
         echo -e "${LRED}[-]\e[0m '${nSiteLogAccessFile}' File not exist!"
 fi;
@@ -350,7 +381,7 @@ fi;
 
 if [ ! -d ${nSiteLogsDIR} ]; then
         rm -f -r ${nSiteLogsDIR};
-        echo -e "${LGREEN}[+]\e[0m deleting file: ", ${nSiteLogsDIR};
+        echo -e "${LGREEN}[+]\e[0m deleting file: ", ${nSiteLogsDIR}
 else
         echo -e "${LRED}[-]\e[0m '${nSiteLogsDIR}' File dos not exist!"
 fi;
@@ -367,7 +398,7 @@ if [ -d ${mainvHostDir} ]; then
 
         rm -f -r ${mainvHostDir};
         
-        echo -e "${LGREEN}[+]\e[0m deleting web site folder: ", ${mainvHostDir};
+        echo -e "${LGREEN}[+]\e[0m deleting web site folder: ", ${mainvHostDir}
 
 else
         echo -e "${LRED}[-]\e[0m '${mainvHostDir}' Folder dos not exist!"
@@ -381,20 +412,19 @@ function restartApache2 {
         ## restart apache server for the new changes
         echo "[*] Restarting apache2 server."
 
+if [[ -n $ubuntu && "$ubuntu" == "ubuntu" ]]; then
+
         ## restrt apache2 in Ubuntu system
-        sudo /etc/init.d/apache2 restart;
-
-        ## you can also use service apahce2 restart     
-        #sudo service apahce2 restart
-
-        ## on CentOS systems 
-        #sudo /etc/init.d/httpd restart
-
-        ## other commands for apache on CentOS
-        #sudo /etc/init.d/httpd stop
-        #sudo /etc/init.d/httpd start
-        
+        sudo /etc/init.d/apache2 restart
         exit;
+        
+elif [[ -n $centOS && "$centOS" == "centos" ]]; then
+        ## other commands for apache on CentOS
+        sudo /etc/init.d/httpd stop
+        sudo /etc/init.d/httpd start
+        exit;
+fi;
+
 }
 
 function createSite {
@@ -444,6 +474,25 @@ restartApache2
 
 }
 
+function sysCheck {
+
+## find system type
+## CentOS or Ubuntu
+
+ubuntu=$(cat /proc/version | grep -o ubuntu)
+centOS=$(cat /proc/version | grep -o centos)
+
+if [[ -n $ubuntu && "$ubuntu" == "ubuntu" ]]; then
+        echo -e "${LGREEN}[+]\e[0m System detacted: " $ubuntu
+
+elif [[ -n $centOS && "$centOS" == "centos" ]]; then
+        echo -e "${LGREEN}[+]\e[0m System detacted: " $centOS
+else
+        echo -e "${LRED}[-]\e[0m error!, can't detact system"
+fi;
+
+}
+
 function main {
 
 ## the execution of the program
@@ -477,18 +526,18 @@ regex=$(echo $siteName | grep -P '(?=^.{5,254}$)(^(?:(?!\d+\.)[a-zA-Z0-9_\-]{1,6
 if [ "$regex" = "$siteName" ]; then
         
         if [ "$opt" = "-c" ]; then
-                echo "Createing the new virtual host for '$siteName' ..."
+                echo "[] Createing the new virtual host for '$siteName' ..."
                 createSite
 
         elif [ "$opt" = "-d" ]; then
-                echo "deleting $siteName !"     
+                echo "[] deleting $siteName !"     
                 deleteSite
         else 
-                echo "Error!, unknown option."
+                echo "[] Error!, unknown option."
         fi;
 else 
         
-        echo "error!, please check your domain name."
+        echo "[] error!, please check your domain name."
         exit 1
 fi;
 
