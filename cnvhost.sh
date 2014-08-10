@@ -390,6 +390,10 @@ function restartApache2 {
         ## on CentOS systems 
         #sudo /etc/init.d/httpd restart
 
+        ## other commands for apache on CentOS
+        #sudo /etc/init.d/httpd stop
+        #sudo /etc/init.d/httpd start
+        
         exit;
 }
 
