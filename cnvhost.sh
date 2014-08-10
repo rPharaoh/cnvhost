@@ -3,12 +3,10 @@
 #   Created: Sun August 03 21:04:12 2014 by Nader Nabil @Nader_N2012
 #
 
-## Web Site Dirs and Logs
-
-
 LRED="\033[01;31m"
 LGREEN="\033[01;32m"
 
+## Web Site Dirs and Logs
 ## user can edit this section if it need:
 ## this configration for ubuntu servers 
 webDir="/var/www/htdocs/"
@@ -105,7 +103,6 @@ else
         echo -e "${LGREEN}[+]\e[0m adding script comment!"
         echo ${injectedComment} >> ${mainConfigFile}
 fi;
-
 
 ## find vhost config folder to apache2 configration
 
