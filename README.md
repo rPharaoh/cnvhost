@@ -3,7 +3,7 @@ cnvhost
 
 Bash script for creating Apache Virtual Host on linux systems ( tested on Ubuntu Server, CentOS )
 
-this script for making virtual hosts easy for fast web application testing, development
+this script for making virtual hosts easy for fast web application testing, development when you need more then one hostname and spreated on one server
 
 creating new virtual host
 
@@ -16,3 +16,5 @@ deleting virtual host
 usage: sudo ./cnvhost.sh -d example.com
 
 this deletes virtual host with the name example.com
+
+you can edit the code for you needs and directory and settings for virtual hosts configration and directory paths

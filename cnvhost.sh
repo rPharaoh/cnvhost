@@ -50,8 +50,6 @@ elif [[ -n $centOS && "$centOS" == "centos" ]]; then
         injectedCommand="Include conf/vhosts/*.conf"
         checkInjectedCommand="Include conf/vhosts/\*.conf"
 
-
-
 else
         echo -e "${LRED}[-]\e[0m error!, can't detact system"
         echo -e "${LGREEN}[+]\e[0m using defualt setting"
@@ -279,7 +277,6 @@ fi;
 
 }
 
-
 function deleteFolders {
 
 ## =================================
@@ -433,7 +430,6 @@ function createSite {
 ## call the functions to do this jobi
 ## creating new website in virtual host
 
-
 # Editing the configration file of Apache server 
 # Tested and working
 editApache2Config
@@ -503,7 +499,7 @@ if [ "$opt" = "-da" ]; then
         if [[ "$useropt" = "y" || "$useropt" = "Y"  ]]; then
                 deleteAllDir
 
-        elif [[ "$useropt" = "y" || "$useropt" = "N" ]]; then
+        elif [[ "$useropt" = "n" || "$useropt" = "N" ]]; then
                 exit 1
         fi;
 fi;
