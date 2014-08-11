@@ -522,18 +522,18 @@ regex=$(echo $siteName | grep -P '(?=^.{5,254}$)(^(?:(?!\d+\.)[a-zA-Z0-9_\-]{1,6
 if [ "$regex" = "$siteName" ]; then
         
         if [ "$opt" = "-c" ]; then
-                echo "[] Createing the new virtual host for '$siteName' ..."
+                echo -e "${LGREEN}[+]\e[0m Createing the new virtual host for '$siteName' ..."
                 createSite
 
         elif [ "$opt" = "-d" ]; then
-                echo "[] deleting $siteName !"     
+                echo -e "${LGREEN}[+]\e[0m deleting $siteName !"     
                 deleteSite
         else 
-                echo "[] Error!, unknown option."
+                echo -e "${LRED}[-]\e[0m Error!, unknown option."
         fi;
 else 
         
-        echo "[] error!, please check your domain name."
+        echo -e "${LRED}[-]\e[0m error!, please check your domain name."
         exit 1
 fi;
 
