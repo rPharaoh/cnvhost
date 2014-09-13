@@ -108,7 +108,6 @@ function randPass {
 
 ## generate random password
 randPassword=$(randPass 8)
-echo ${randPassword}
 
 function editApache2Config {
 
@@ -516,7 +515,7 @@ function reportData {
         echo "====================================== "
         echo " "
         echo " Domain name: ${siteName}"
-        echo " Server IP: localhost or 127.0.0.1"
+        echo " Server: localhost or 127.0.0.1"
         echo " Database Name: ${mysqlDBName}"
         echo " Database User: ${dbNewUser}"
         echo " Database Password: ${randPassword}"
