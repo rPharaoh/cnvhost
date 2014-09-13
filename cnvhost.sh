@@ -31,7 +31,7 @@ ubuntu=$(cat /proc/version | grep -o ubuntu)
 centOS=$(cat /proc/version | grep -o centos)
 
 if [[ -n $ubuntu && "$ubuntu" == "ubuntu" ]]; then
-        echo -e "${LGREEN}[+]\e[0m System detacted: " $ubuntu
+        #echo -e "${LGREEN}[+]\e[0m System detacted: " $ubuntu
 
         configFilePath="/etc/apache2/"
         configFileName="apache2.conf"
@@ -39,7 +39,7 @@ if [[ -n $ubuntu && "$ubuntu" == "ubuntu" ]]; then
         logDir="/var/www/log/" 
 
 elif [[ -n $centOS && "$centOS" == "centos" ]]; then
-        echo -e "${LGREEN}[+]\e[0m System detacted: " $centOS
+        #echo -e "${LGREEN}[+]\e[0m System detacted: " $centOS
 
         ## for CentOS can use configration like
         configFilePath="/etc/httpd/conf/"
@@ -89,6 +89,26 @@ nSiteIndex=$webDir$siteName"/public_html/index.html"
 nSiteLogsDIR=$logDir$siteName"/"
 nSiteLogErrorFile=$logDir$siteName"/"$siteName$errorLog
 nSiteLogAccessFile=$logDir$siteName"/"$siteName$accessLog
+
+## MySQL data
+mysqlUser="scriptAccess"
+mysqlPass="high_phi_01001"
+dbString=$(echo "${siteName}" | sed 's/\./_/g')
+mysqlDBName="db_"${dbString}
+dbNewUser=$dbString
+
+## generating random password for new users
+## importnet for database user authentication
+function randPass {
+
+  [ "$2" == "0" ] && CHAR="[:alnum:]" || CHAR="[:graph:]"
+    cat /dev/urandom | tr -cd "$CHAR" | head -c ${1:-32}
+    echo
+}
+
+## generate random password
+randPassword=$(randPass 8)
+echo ${randPassword}
 
 function editApache2Config {
 
@@ -404,6 +424,55 @@ fi;
 
 }
 
+function createSiteDB {
+ 
+# connect to mysql server and create database under site name
+
+createDB=$(mysql -u ${mysqlUser} -p${mysqlPass} -e "CREATE DATABASE ${mysqlDBName};")
+
+if [[ -z ${createDB} && "${createDB}" == "" ]]; then
+        echo -e "${LGREEN}[+]\e[0m Database Created!"
+else
+        echo -e "${LRED}[-]\e[0m error!, could not create database"
+fi;
+
+## create username for site and get access to database only
+
+createUser=$(mysql -u ${mysqlUser} -p${mysqlPass} -e "CREATE USER '${dbNewUser}' IDENTIFIED BY '${randPassword}'; GRANT ALL PRIVILEGES ON ${mysqlDBName} TO ${dbNewUser}; FLUSH PRIVILEGES;")
+
+if [[ -z ${createUser} && "${createUser}" == "" ]]; then
+        echo -e "${LGREEN}[+]\e[0m User Created!"
+else
+        echo -e "${LRED}[-]\e[0m error!, could not create user"
+fi;
+        
+}
+
+function deleteSiteDB {
+
+## connect to mysql server and create database under site name
+
+deleteDB=$(mysql -u ${mysqlUser} -p${mysqlPass} -e "DROP DATABASE ${mysqlDBName};")
+
+if [[ -z ${deleteDB} && "${deleteDB}" == "" ]]; then
+        
+        echo -e "${LGREEN}[+]\e[0m Database deleted!"
+else
+        echo -e "${LRED}[-]\e[0m error!, could not delete database"
+fi;
+
+## delete username for site and its permisstions access to database only
+
+deleteUser=$(mysql -u ${mysqlUser} -p${mysqlPass} -e "DROP USER ${dbNewUser}; FLUSH PRIVILEGES;")
+
+if [[ -z ${deleteUser} && "${deleteUser}" == "" ]]; then
+        echo -e "${LGREEN}[+]\e[0m User deleted!"
+else
+        echo -e "${LRED}[-]\e[0m error!, could not delete user"
+fi;
+        
+}
+
 function restartApache2 {
 
         ## restart apache server for the new changes
@@ -412,16 +481,49 @@ function restartApache2 {
 if [[ -n $ubuntu && "$ubuntu" == "ubuntu" ]]; then
 
         ## restrt apache2 in Ubuntu system
-        sudo /etc/init.d/apache2 restart
-        exit;
-        
+        # sudo /etc/init.d/apache2 restart
+        apache2ctl configtest
+                
 elif [[ -n $centOS && "$centOS" == "centos" ]]; then
         ## other commands for apache on CentOS
         sudo /etc/init.d/httpd stop
         sudo /etc/init.d/httpd start
-        exit;
 fi;
 
+}
+
+function restartMySQL {
+
+        ## restart MySQL server for the new changes
+        echo "[*] Restarting MySQL server."
+
+if [[ -n $ubuntu && "$ubuntu" == "ubuntu" ]]; then
+
+        ## restrt MySQL in Ubuntu system
+        sudo /etc/init.d/mysql restart
+
+elif [[ -n $centOS && "$centOS" == "centos" ]]; then
+        ## other commands for apache on CentOS
+        sudo /etc/init.d/mysql stop
+        sudo /etc/init.d/mysql start
+fi;
+
+}
+
+function reportData {
+
+        echo " "
+        echo "====================================== "
+        echo " "
+        echo " Domain name: ${siteName}"
+        echo " Server IP: localhost or 127.0.0.1"
+        echo " Database Name: ${mysqlDBName}"
+        echo " Database User: ${dbNewUser}"
+        echo " Database Password: ${randPassword}"
+        echo " "
+        echo "====================================== "
+        echo " "
+        exit;
 }
 
 function createSite {
@@ -446,8 +548,17 @@ createVHostFiles
 # adding the html page
 indexPageSchame
 
+# creating database for the site
+createSiteDB
+
+# restarting the MySQL server for the new configration
+# restartMySQL # no need for it for now
+
 # restarting the apache server for the new configration
 restartApache2
+
+## report all data of website and database connection string
+reportData
 
 }
 
@@ -464,6 +575,12 @@ deleteVHostFile
 
 ## delete the website folders and all its content
 deleteFolders
+
+# delete the site database
+deleteSiteDB
+
+# restarting the MySQL server for the new configration
+# restartMySQL # no need for now
 
 # restarting the apache server for the new configration
 restartApache2
@@ -509,7 +626,7 @@ if [ -z $siteName  ]; then
         echo "Usage: $0 [option] [-c, -d] domanin.com"
         echo "Example: $0 -c example.com" 
         echo "-c creating new virtual host website"
-        echo "-d deleting the site you assient"
+        echo "-d deleting the site you define"
         echo "-da deleting all logs and vhosts, example: $0 -da "
         echo " "
         exit 1
@@ -527,7 +644,7 @@ if [ "$regex" = "$siteName" ]; then
 
         elif [ "$opt" = "-d" ]; then
                 echo -e "${LGREEN}[+]\e[0m deleting $siteName !"     
-                deleteSite
+                deleteSite              
         else 
                 echo -e "${LRED}[-]\e[0m Error!, unknown option."
         fi;
