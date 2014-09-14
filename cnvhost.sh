@@ -480,8 +480,7 @@ function restartApache2 {
 if [[ -n $ubuntu && "$ubuntu" == "ubuntu" ]]; then
 
         ## restrt apache2 in Ubuntu system
-        # sudo /etc/init.d/apache2 restart
-        apache2ctl configtest
+        sudo /etc/init.d/apache2 restart
                 
 elif [[ -n $centOS && "$centOS" == "centos" ]]; then
         ## other commands for apache on CentOS
