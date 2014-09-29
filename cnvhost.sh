@@ -92,7 +92,7 @@ nSiteLogAccessFile=$logDir$siteName"/"$siteName$accessLog
 
 ## MySQL data
 mysqlUser="scriptAccess"
-mysqlPass="high_phi_01001"
+mysqlPass="yoursHere"
 dbString=$(echo "${siteName}" | sed 's/\./_/g')
 mysqlDBName="db_"${dbString}
 dbNewUser=$dbString
