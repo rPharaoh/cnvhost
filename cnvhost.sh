@@ -547,7 +547,7 @@ createVHostFiles
 indexPageSchame
 
 # creating database for the site
-createSiteDB
+#createSiteDB
 
 # restarting the MySQL server for the new configration
 # restartMySQL # no need for it for now
@@ -556,7 +556,7 @@ createSiteDB
 restartApache2
 
 ## report all data of website and database connection string
-reportData
+#reportData
 
 }
 
@@ -575,7 +575,7 @@ deleteVHostFile
 deleteFolders
 
 # delete the site database
-deleteSiteDB
+#deleteSiteDB
 
 # restarting the MySQL server for the new configration
 # restartMySQL # no need for now
